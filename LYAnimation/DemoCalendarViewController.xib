@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DemoCalendarViewController">
+            <connections>
+                <outlet property="calendarView" destination="QJ4-FX-r86" id="e8b-L8-AmL"/>
+                <outlet property="tableView" destination="MlB-tI-JNl" id="H03-0L-bbg"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QJ4-FX-r86" customClass="LYCalendarView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="375" id="DSM-v4-llx"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MlB-tI-JNl">
+                    <rect key="frame" x="0.0" y="375" width="375" height="228"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="240" id="Xkh-7T-LYQ"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Xkh-7T-LYQ"/>
+                        </mask>
+                    </variation>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="0.8287484329434226" green="1" blue="0.76623227422368279" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="MlB-tI-JNl" firstAttribute="top" secondItem="QJ4-FX-r86" secondAttribute="bottom" id="7FU-Su-n6H"/>
+                <constraint firstAttribute="bottom" secondItem="MlB-tI-JNl" secondAttribute="bottom" id="DYn-7Z-Rzx"/>
+                <constraint firstAttribute="trailing" secondItem="MlB-tI-JNl" secondAttribute="trailing" id="OpE-UG-NAh"/>
+                <constraint firstItem="QJ4-FX-r86" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="P9n-Ch-m3H"/>
+                <constraint firstItem="QJ4-FX-r86" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="U5e-9F-STO"/>
+                <constraint firstAttribute="trailing" secondItem="QJ4-FX-r86" secondAttribute="trailing" id="X7s-MJ-U7O"/>
+                <constraint firstItem="QJ4-FX-r86" firstAttribute="leading" secondItem="MlB-tI-JNl" secondAttribute="trailing" constant="-408" id="cKa-xG-Zup"/>
+                <constraint firstItem="MlB-tI-JNl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rs2-NZ-5hX"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="cKa-xG-Zup"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+</document>
