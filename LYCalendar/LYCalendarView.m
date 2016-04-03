@@ -13,7 +13,7 @@
 #import "LYCalendarView.h"
 #import "UIColor+LYCalendar.h"
 
-@interface LYCalendarView ()
+@interface LYCalendarView ()<JTCalendarDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
 {
     NSDate *_dateSelected;
     
@@ -27,8 +27,13 @@
     CGFloat _calendarWeekdayViewHeight;
     
     CGFloat _viewHeight;
-    
 }
+// JTCalendar
+@property (strong, nonatomic) JTCalendarMenuView *calendarMenuView;
+@property (strong, nonatomic) JTHorizontalCalendarView *calendarContentView;
+@property (strong, nonatomic) JTCalendarManager *calendarManager;
+@property (weak, nonatomic) NSLayoutConstraint *calendarContentViewHeight;
+@property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
 
 @property (nonatomic, assign) CGFloat gestureTransitionY;         // 手势拖动Y轴位移
 
@@ -475,16 +480,15 @@
 
 - (void)createShadow
 {
-    _calendarContentView.layer.shadowColor = [UIColor grayColor].CGColor;//shadowColor阴影颜色
-    _calendarContentView.layer.shadowOffset = CGSizeMake(0, 0);//shadowOffset阴影偏移，默认(0, -3),这个跟shadowRadius配合使用
-    _calendarContentView.layer.shadowOpacity = 1;//阴影透明度，默认0
+    _calendarContentView.layer.shadowColor = [UIColor grayColor].CGColor;
+    _calendarContentView.layer.shadowOffset = CGSizeMake(0, 0);
+    _calendarContentView.layer.shadowOpacity = 1;
     _calendarContentView.layer.shadowRadius = 2;
     _calendarContentView.layer.masksToBounds = NO;
 }
 
 - (UIView *)getCurrentMonth
 {
-//    return _calendarContentView.subviews[1];
     return [_calendarContentView getCurrentPageView];
 }
 
@@ -494,9 +498,9 @@
     return !_collapsed;
 }
 
-- (void)reload
+- (void)setDate:(NSDate *)date
 {
-    [_calendarContentView build];
+    [_calendarManager setDate:date];
 }
 
 @end

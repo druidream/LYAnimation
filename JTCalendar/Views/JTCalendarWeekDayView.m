@@ -47,7 +47,7 @@
         
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor weekdayFontColor];
-        label.font = [UIFont systemFontOfSize:12. weight:1.];
+        label.font = [UIFont boldSystemFontOfSize:12.];
         label.backgroundColor = [UIColor weekdayBackgroundColor];
         
         [self addSubview:label];

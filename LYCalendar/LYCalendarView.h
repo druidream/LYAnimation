@@ -13,30 +13,19 @@
 
 @optional
 
-- (BOOL)hasSponsorForDay:(NSDate *)date;
-- (BOOL)hasEventForDay:(NSDate *)date;
-- (BOOL)hasCoincidenceForDay:(NSDate *)date; // 有缘人
+- (BOOL)hasSponsorForDay:(NSDate *)date;    // 有赞助
+- (BOOL)hasEventForDay:(NSDate *)date;      // 有活动
+- (BOOL)hasCoincidenceForDay:(NSDate *)date;// 有缘人
 
-- (void)dateDidSelect:(NSDate *)date;
+- (void)dateDidSelect:(NSDate *)date;       // 选中日期后的回调
 
 @end
 
-@interface LYCalendarView : UIView<JTCalendarDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface LYCalendarView : UIView
 
-// JTCalendar
-@property (strong, nonatomic) JTCalendarMenuView *calendarMenuView;
-@property (strong, nonatomic) JTHorizontalCalendarView *calendarContentView;
-
-@property (strong, nonatomic) JTCalendarManager *calendarManager;
-
-@property (weak, nonatomic) NSLayoutConstraint *calendarContentViewHeight;
-
-@property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
-
-// LYCalendar
 @property (weak, nonatomic) id<LYCalendarViewDelegate> delegate;
 @property (weak, nonatomic) UIView *associatedView;
 
-- (void)reload;
+- (void)setDate:(NSDate *)date;
 
 @end

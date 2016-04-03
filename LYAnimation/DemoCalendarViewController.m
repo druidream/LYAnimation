@@ -21,12 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    
-//    if([[[UIDevice currentDevice]systemVersion]floatValue]>=7.0)
-//    {
-//        self.edgesForExtendedLayout = UIRectEdgeNone;
-//        self.automaticallyAdjustsScrollViewInsets = NO;
-//    }
+
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -38,6 +33,8 @@
     // 创建测试数据：赞助、活动和有缘人
     [self createRandomSponsors];
     [self createRandomEvents];
+    
+//    [self.calendarView setDate:[NSDate date]];
 }
 
 #pragma mark - tableview delegate
@@ -96,6 +93,11 @@
     return NO;
 }
 
+- (void)dateDidSelect:(NSDate *)date
+{
+    self.navigationItem.title = [[self dateFormatter] stringFromDate:date];
+}
+
 #pragma mark - 测试用数据
 
 - (void)createRandomEvents
@@ -141,7 +143,7 @@
     static NSDateFormatter *dateFormatter;
     if(!dateFormatter){
         dateFormatter = [NSDateFormatter new];
-        dateFormatter.dateFormat = @"dd-MM-yyyy";
+        dateFormatter.dateFormat = @"yyyy-MM-dd";
     }
     
     return dateFormatter;

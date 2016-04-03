@@ -10,6 +10,7 @@
 #import "DemoMainViewController.h"
 #import "DemoCalendarViewController.h"
 #import "DemoLoginViewController.h"
+#import "DemoSnapViewController.h"
 
 @interface AppDelegate ()
 
@@ -21,37 +22,33 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    DemoMainViewController *mainViewController = [[DemoMainViewController alloc] init];
-    DemoCalendarViewController *calendarViewController = [[DemoCalendarViewController alloc] init];
-    
-//    UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:mainViewController];
-    UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:calendarViewController];
-    DemoLoginViewController *loginViewController = [[DemoLoginViewController alloc] init];
-    
-
     [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:0/255. green:204/255. blue:202/255. alpha:1.];
     [UINavigationBar appearance].tintColor = [UIColor whiteColor];
     
-//    [nav1.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,nil]];
+    DemoMainViewController *mainViewController = [[DemoMainViewController alloc] init];
+    DemoCalendarViewController *calendarViewController = [[DemoCalendarViewController alloc] init];
+    DemoLoginViewController *loginViewController = [[DemoLoginViewController alloc] init];
+    DemoSnapViewController *snapViewController = [[DemoSnapViewController alloc] init];
+    
+    UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:calendarViewController];
+    UINavigationController *nav4 = [[UINavigationController alloc] initWithRootViewController:snapViewController];
     [nav2.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,nil]];
     
     mainViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页" image:[UIImage imageNamed:@"first"] tag:1];
     nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"日历" image:[UIImage imageNamed:@"second"] tag:2];
     loginViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"登录" image:[UIImage imageNamed:@"first"] tag:3];
-    
+    snapViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"//吸附" image:[UIImage imageNamed:@"second"] tag:4];
     
     UITabBarController *controller = [UITabBarController new];
-    controller.viewControllers = [NSArray arrayWithObjects:mainViewController, nav2, loginViewController, nil];
+    controller.viewControllers = [NSArray arrayWithObjects:mainViewController,
+                                  nav2,
+                                  loginViewController,
+                                  nav4,
+                                  nil];
     
-    [UITabBar appearance].selectionIndicatorImage = [UIImage imageNamed:@"indicator"];
-
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = controller;
-    
     [self.window makeKeyAndVisible];
-    
     
     return YES;
 }

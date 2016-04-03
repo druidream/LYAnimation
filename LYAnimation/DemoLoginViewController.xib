@@ -16,6 +16,9 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login-bg2" translatesAutoresizingMaskIntoConstraints="NO" id="AtA-OE-Trq">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LiZ-z9-2nV" customClass="LYLoginButton">
                     <rect key="frame" x="38" y="531" width="300" height="56"/>
                     <constraints>
@@ -34,9 +37,22 @@
             <color key="backgroundColor" red="1" green="0.76461703879999998" blue="0.70686562539999998" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="LiZ-z9-2nV" secondAttribute="bottom" constant="80" id="90E-xx-4UK"/>
+                <constraint firstItem="AtA-OE-Trq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="HVq-oO-cjG"/>
                 <constraint firstItem="LiZ-z9-2nV" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="WMx-DI-rOT"/>
+                <constraint firstAttribute="bottom" secondItem="AtA-OE-Trq" secondAttribute="bottom" id="Wu5-M6-Qz9"/>
+                <constraint firstAttribute="trailing" secondItem="AtA-OE-Trq" secondAttribute="trailing" id="bX8-e4-Q44"/>
+                <constraint firstItem="LiZ-z9-2nV" firstAttribute="top" secondItem="AtA-OE-Trq" secondAttribute="bottom" id="eKy-XM-waR"/>
+                <constraint firstItem="AtA-OE-Trq" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hWC-dW-j1c"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="eKy-XM-waR"/>
+                </mask>
+            </variation>
         </view>
     </objects>
+    <resources>
+        <image name="login-bg2" width="300" height="534"/>
+    </resources>
 </document>
