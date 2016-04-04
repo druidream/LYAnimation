@@ -38,6 +38,7 @@
 // Week view
 
 - (UIView<JTCalendarDay> *)buildDayView;
+- (void)didTouchWeekDayView:(NSUInteger)weekDayIndex;
 
 
 // Day view

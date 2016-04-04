@@ -88,6 +88,8 @@
  */
 - (UIView<JTCalendarWeek> *)calendarBuildWeekView:(JTCalendarManager *)calendar;
 
+// LYCalendar
+- (void)calendar:(JTCalendarManager *)calendar didTouchWeekDayView:(NSUInteger)weekDayIndex;
 
 // Week view
 

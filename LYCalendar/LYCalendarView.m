@@ -32,7 +32,7 @@
 @property (strong, nonatomic) JTCalendarMenuView *calendarMenuView;
 @property (strong, nonatomic) JTHorizontalCalendarView *calendarContentView;
 @property (strong, nonatomic) JTCalendarManager *calendarManager;
-@property (weak, nonatomic) NSLayoutConstraint *calendarContentViewHeight;
+//@property (weak, nonatomic) NSLayoutConstraint *calendarContentViewHeight;
 @property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
 
 @property (nonatomic, assign) CGFloat gestureTransitionY;         // 手势拖动Y轴位移
@@ -58,26 +58,6 @@
     }
     
     return self;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-//    NSLog(@"%s", __FUNCTION__);
-    
-    _calendarMenuViewHeight = _calendarMenuView.frame.size.height;
-    _calendarContentHeight = _calendarContentView.frame.size.height;
-    _calendarHeight = _calendarMenuViewHeight + _calendarContentHeight;
-    
-    _gestureThreshold = _calendarHeight / 2; // 拖动生效的阈值，不到则恢复原状态
-    
-    if (_calendarContentView.subviews.count >= 2) {
-        UIView *currentMonthView = [self getCurrentMonth];
-        if (currentMonthView.subviews.count >= 2) {
-            _calendarWeekViewHeight = currentMonthView.subviews[1].bounds.size.height;
-            _calendarWeekdayViewHeight = _calendarWeekViewHeight / 2;
-        }
-    }
 }
 
 - (void)awakeFromNib
@@ -117,6 +97,27 @@
     
     // weekviews要移到menu位置，出了content的frame，因此需要设置此属性
     _calendarContentView.clipsToBounds = NO;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    _calendarMenuViewHeight = _calendarMenuView.frame.size.height;
+    _calendarContentHeight = _calendarContentView.frame.size.height;
+    _calendarHeight = _calendarMenuViewHeight + _calendarContentHeight;
+    
+    _gestureThreshold = _calendarHeight / 2; // 拖动生效的阈值，不到则恢复原状态
+    
+    if (_calendarContentView.subviews.count >= 2) {
+        UIView *currentMonthView = [self getCurrentMonth];
+        if (currentMonthView.subviews.count >= 2) {
+            _calendarWeekViewHeight = currentMonthView.subviews[1].bounds.size.height;
+            _calendarWeekdayViewHeight = _calendarWeekViewHeight / 2;
+        }
+    }
+    
+    [_calendarManager reload];
 }
 
 #pragma mark - Calendar Delegate
@@ -166,21 +167,29 @@
         dayView.textLabel.textColor = [UIColor colorWithRed:200./255 green:200./255 blue:200./255 alpha:1.];
     }
     
-    // delegate回调，当天是否有活动
-    if ([_delegate respondsToSelector:@selector(hasEventForDay:)] && [_delegate hasEventForDay:dayView.date]){
-        dayView.hasEvent = YES;
-        dayView.leftTagView.hidden = NO;
-    }
-    
     // delegate回调，当天是否有赞助
     if ([_delegate respondsToSelector:@selector(hasSponsorForDay:)] && [_delegate hasSponsorForDay:dayView.date]) {
         dayView.hasSponsor = YES;
         dayView.leftTagView.hidden = NO;
+    } else {
+        dayView.hasSponsor = NO;
+        dayView.leftTagView.hidden = YES;
+    }
+    
+    // delegate回调，当天是否有活动
+    if ([_delegate respondsToSelector:@selector(hasEventForDay:)] && [_delegate hasEventForDay:dayView.date]){
+        dayView.hasEvent = YES;
+        dayView.rightTagView.hidden = NO;
+    } else {
+        dayView.hasEvent = NO;
+        dayView.rightTagView.hidden = YES;
     }
     
     // delegate回调，当天是否有 有缘人
     if ([_delegate respondsToSelector:@selector(hasCoincidenceForDay:)] && [_delegate hasCoincidenceForDay:dayView.date]) {
         dayView.dotView.hidden = NO;
+    } else {
+        dayView.dotView.hidden = YES;
     }
     
     // LYCalendar 添加 有活动 和 有赞助 的标识
@@ -205,21 +214,38 @@
     }
 }
 
+// 日历weekday点击事件
+- (void)calendar:(JTCalendarManager *)calendar didTouchWeekDayView:(NSUInteger)weekDayIndex
+{
+    
+    NSCalendar *cal = _calendarManager.dateHelper.calendar;
+    NSDateComponents *componentsCurrentDate = [cal components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitWeekOfMonth fromDate:_dateSelected];
+    
+    NSDateComponents *componentsNewDate = [NSDateComponents new];
+    
+    componentsNewDate.year = componentsCurrentDate.year;
+    componentsNewDate.month = componentsCurrentDate.month;
+    componentsNewDate.weekOfMonth = componentsCurrentDate.weekOfMonth;
+    componentsNewDate.weekday = weekDayIndex + 1;
+    
+    _dateSelected = [cal dateFromComponents:componentsNewDate];
+    
+    [_calendarManager reload];
+    
+    if ([self.delegate respondsToSelector:@selector(dateDidSelect:)]) {
+        [self.delegate dateDidSelect:_dateSelected];
+    }
+}
+
 // 点击某天的事件
 - (void)calendar:(JTCalendarManager *)calendar didTouchDayView:(JTCalendarDayView *)dayView
 {
     _dateSelected = dayView.date;
     
     // Animation for the circleView
-//    dayView.circleView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.1, 0.1);
-//    [UIView transitionWithView:dayView
-//                      duration:.3
-//                       options:0
-//                    animations:^{
-                        dayView.circleView.transform = CGAffineTransformIdentity;
-                        [_calendarManager reload];
-//                    } completion:nil];
     
+    dayView.circleView.transform = CGAffineTransformIdentity;
+    [_calendarManager reload];
     
     // Load the previous or next page if touch a day from another month
     
@@ -404,7 +430,8 @@
             weekView.center = CGPointMake(DEFAULT_WIDTH / 2, _calendarWeekdayViewHeight / 2 - _calendarMenuViewHeight);
             // only week view responds to startDate
             if ([weekView respondsToSelector:@selector(startDate)]) {
-                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarMenuViewHeight);
+//                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarMenuViewHeight);
+                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarMenuViewHeight - _calendarWeekViewHeight / 2);
                 // this week
                 if ([_calendarManager.dateHelper date:weekView.startDate isTheSameWeekThan:[NSDate date]]) {
                     // do not change alpha

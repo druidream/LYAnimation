@@ -30,13 +30,14 @@
 		6AD9D3C41CAFA70D005869D3 /* JTHorizontalCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D3B71CAFA70D005869D3 /* JTHorizontalCalendarView.m */; };
 		6AD9D3C51CAFA70D005869D3 /* JTVerticalCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D3B91CAFA70D005869D3 /* JTVerticalCalendarView.m */; };
 		6AD9D3FA1CAFFE4C005869D3 /* LYCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D3F61CAFFE4C005869D3 /* LYCalendarView.m */; };
-		6AD9D3FB1CAFFE4C005869D3 /* RTWSBanHeiG0v1-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6AD9D3F71CAFFE4C005869D3 /* RTWSBanHeiG0v1-Regular.ttf */; };
 		6AD9D3FC1CAFFE4C005869D3 /* UIColor+LYCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D3F91CAFFE4C005869D3 /* UIColor+LYCalendar.m */; };
 		6AD9D4041CAFFE5E005869D3 /* LYLoginButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D3FF1CAFFE5E005869D3 /* LYLoginButton.m */; };
 		6AD9D4051CAFFE5E005869D3 /* LYLoginPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D4011CAFFE5E005869D3 /* LYLoginPresentationController.m */; };
 		6AD9D4061CAFFE5E005869D3 /* LYLoginTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D4031CAFFE5E005869D3 /* LYLoginTransition.m */; };
 		6AD9D40A1CB00A1E005869D3 /* DemoSnapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D4081CB00A1E005869D3 /* DemoSnapViewController.m */; };
 		6AD9D40B1CB00A1E005869D3 /* DemoSnapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD9D4091CB00A1E005869D3 /* DemoSnapViewController.xib */; };
+		6AD9D40F1CB128D8005869D3 /* LYCalendarWeekDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D40E1CB128D8005869D3 /* LYCalendarWeekDayView.m */; };
+		6AD9D4101CB195C7005869D3 /* RTWSBanHeiG0v1-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6AD9D40C1CB1199A005869D3 /* RTWSBanHeiG0v1-Regular.ttf */; };
 		B2554130754B3649096C909C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E4289908DCC0BCF2F7C8B88 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -93,7 +94,6 @@
 		6AD9D3B91CAFA70D005869D3 /* JTVerticalCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JTVerticalCalendarView.m; sourceTree = "<group>"; };
 		6AD9D3F51CAFFE4C005869D3 /* LYCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYCalendarView.h; sourceTree = "<group>"; };
 		6AD9D3F61CAFFE4C005869D3 /* LYCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYCalendarView.m; sourceTree = "<group>"; };
-		6AD9D3F71CAFFE4C005869D3 /* RTWSBanHeiG0v1-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RTWSBanHeiG0v1-Regular.ttf"; sourceTree = "<group>"; };
 		6AD9D3F81CAFFE4C005869D3 /* UIColor+LYCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+LYCalendar.h"; sourceTree = "<group>"; };
 		6AD9D3F91CAFFE4C005869D3 /* UIColor+LYCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+LYCalendar.m"; sourceTree = "<group>"; };
 		6AD9D3FE1CAFFE5E005869D3 /* LYLoginButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYLoginButton.h; sourceTree = "<group>"; };
@@ -105,6 +105,9 @@
 		6AD9D4071CB00A1E005869D3 /* DemoSnapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSnapViewController.h; sourceTree = "<group>"; };
 		6AD9D4081CB00A1E005869D3 /* DemoSnapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSnapViewController.m; sourceTree = "<group>"; };
 		6AD9D4091CB00A1E005869D3 /* DemoSnapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoSnapViewController.xib; sourceTree = "<group>"; };
+		6AD9D40C1CB1199A005869D3 /* RTWSBanHeiG0v1-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RTWSBanHeiG0v1-Regular.ttf"; sourceTree = "<group>"; };
+		6AD9D40D1CB128D8005869D3 /* LYCalendarWeekDayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYCalendarWeekDayView.h; path = LYCalendar/LYCalendarWeekDayView.h; sourceTree = SOURCE_ROOT; };
+		6AD9D40E1CB128D8005869D3 /* LYCalendarWeekDayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYCalendarWeekDayView.m; path = LYCalendar/LYCalendarWeekDayView.m; sourceTree = SOURCE_ROOT; };
 		95AA9BD33755759C4E3AE8C7 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -164,6 +167,7 @@
 		6ACF304D1CAAD25A0094EC24 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6AD9D40C1CB1199A005869D3 /* RTWSBanHeiG0v1-Regular.ttf */,
 				6ACF30501CAAD25A0094EC24 /* AppDelegate.h */,
 				6ACF30511CAAD25A0094EC24 /* AppDelegate.m */,
 				6ACF305C1CAAD25A0094EC24 /* Assets.xcassets */,
@@ -242,7 +246,8 @@
 			children = (
 				6AD9D3F51CAFFE4C005869D3 /* LYCalendarView.h */,
 				6AD9D3F61CAFFE4C005869D3 /* LYCalendarView.m */,
-				6AD9D3F71CAFFE4C005869D3 /* RTWSBanHeiG0v1-Regular.ttf */,
+				6AD9D40D1CB128D8005869D3 /* LYCalendarWeekDayView.h */,
+				6AD9D40E1CB128D8005869D3 /* LYCalendarWeekDayView.m */,
 				6AD9D3F81CAFFE4C005869D3 /* UIColor+LYCalendar.h */,
 				6AD9D3F91CAFFE4C005869D3 /* UIColor+LYCalendar.m */,
 			);
@@ -339,7 +344,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AD9D3FB1CAFFE4C005869D3 /* RTWSBanHeiG0v1-Regular.ttf in Resources */,
+				6AD9D4101CB195C7005869D3 /* RTWSBanHeiG0v1-Regular.ttf in Resources */,
 				6AD9D40B1CB00A1E005869D3 /* DemoSnapViewController.xib in Resources */,
 				6ACF30601CAAD25A0094EC24 /* LaunchScreen.storyboard in Resources */,
 				6ACF305D1CAAD25A0094EC24 /* Assets.xcassets in Resources */,
@@ -410,6 +415,7 @@
 				6ACF30521CAAD25A0094EC24 /* AppDelegate.m in Sources */,
 				6AD9D3BC1CAFA70D005869D3 /* JTDateHelper.m in Sources */,
 				6AD9D3FA1CAFFE4C005869D3 /* LYCalendarView.m in Sources */,
+				6AD9D40F1CB128D8005869D3 /* LYCalendarWeekDayView.m in Sources */,
 				6AD9D4051CAFFE5E005869D3 /* LYLoginPresentationController.m in Sources */,
 				6ACF30B11CAAD6090094EC24 /* DemoLoginViewController.m in Sources */,
 				6AD9D40A1CB00A1E005869D3 /* DemoSnapViewController.m in Sources */,
@@ -534,7 +540,7 @@
 				INFOPLIST_FILE = LYAnimation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.liuyi.LYAnimation;
+				PRODUCT_BUNDLE_IDENTIFIER = com.61media.LYAnimation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -547,7 +553,7 @@
 				INFOPLIST_FILE = LYAnimation/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.liuyi.LYAnimation;
+				PRODUCT_BUNDLE_IDENTIFIER = com.61media.LYAnimation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

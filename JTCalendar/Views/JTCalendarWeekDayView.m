@@ -40,6 +40,8 @@
 
 - (void)commonInit
 {
+    self.backgroundColor = [UIColor weekdayBackgroundColor];
+    
     NSMutableArray *dayViews = [NSMutableArray new];
     
     for(int i = 0; i < NUMBER_OF_DAY_BY_WEEK; ++i){
@@ -48,13 +50,30 @@
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor weekdayFontColor];
         label.font = [UIFont boldSystemFontOfSize:12.];
-        label.backgroundColor = [UIColor weekdayBackgroundColor];
         
         [self addSubview:label];
         [dayViews addObject:label];
     }
     
+    // LYCalendar
+    {
+        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTouch:)];
+        
+        self.userInteractionEnabled = YES;
+        [self addGestureRecognizer:gesture];
+    }
+    
     _dayViews = dayViews;
+    
+    UILabel *selectIndicator = [UILabel new];
+    selectIndicator.backgroundColor = [UIColor colorWithRed:0.773  green:0.773  blue:0.773 alpha:1];
+    selectIndicator.textColor = [UIColor whiteColor];
+    selectIndicator.textAlignment = NSTextAlignmentCenter;
+    selectIndicator.text = @"7";
+//    selectIndicator.hidden = YES;
+    _selectIndicator = selectIndicator;
+    
+    [self addSubview:selectIndicator];
 }
 
 - (void)reload
@@ -114,8 +133,23 @@
     
     for(UIView *dayView in _dayViews){
         dayView.frame = CGRectMake(x, 0, dayWidth, dayHeight);
+        _selectIndicator.frame = CGRectMake(x, 0, dayWidth, dayHeight);
         x += dayWidth;
     }
+    
+}
+
+- (void)didTouch:(UIGestureRecognizer *)gesture
+{
+    CGFloat dayWidth = self.frame.size.width / NUMBER_OF_DAY_BY_WEEK;
+    CGFloat dayHeight = self.frame.size.height;
+    NSUInteger touchInWhichRange = [gesture locationInView:self].x / dayWidth;
+    _selectIndicator.frame = CGRectMake(dayWidth * touchInWhichRange, 0, dayWidth, dayHeight);
+    
+    NSString *text = touchInWhichRange == 0 ? @"7" : [NSString stringWithFormat:@"%lu", (unsigned long)touchInWhichRange];
+    _selectIndicator.text = text;
+    
+    [_manager.delegateManager didTouchWeekDayView:touchInWhichRange];
 }
 
 @end

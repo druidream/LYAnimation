@@ -134,8 +134,8 @@
         
         if(weekDayHeight == 0){ // Or use the same height than weeksViews
             // 初始设置weekday高度
-//            weekDayHeight = self.frame.size.height / (_numberOfWeeksDisplayed + 1);
-            weekDayHeight = self.frame.size.height / (_numberOfWeeksDisplayed * 2 + 1); // 设置为week view高度的一半
+            // 设置为week view高度的一半
+            weekDayHeight = self.frame.size.height / (_numberOfWeeksDisplayed * 2 + 1);
         }
         
         _weekDayView.frame = CGRectMake(0, 0, weekWidth, weekDayHeight);

@@ -69,7 +69,7 @@
         yearLabel.text = [NSString stringWithFormat:@"%ld", (long)comps.year];
         yearLabel.font = [UIFont fontWithName:@"RTWSBanHeiG0v1-Regular" size:14.];
         yearLabel.textColor = [UIColor menuSubFontColor];
-        [menuItemView addSubview:yearLabel];
+//        [menuItemView addSubview:yearLabel];
         
         
         NSDateComponents *componentsA = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
@@ -166,6 +166,13 @@
     }
     
     return [JTCalendarDayView new];
+}
+
+- (void)didTouchWeekDayView:(NSUInteger)weekDayIndex
+{
+    if(_manager.delegate && [_manager.delegate respondsToSelector:@selector(calendar:didTouchWeekDayView:)]){
+        [_manager.delegate calendar:self.manager didTouchWeekDayView:weekDayIndex];
+    }
 }
 
 #pragma mark - Day view

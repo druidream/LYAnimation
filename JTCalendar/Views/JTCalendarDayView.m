@@ -151,6 +151,7 @@
     [_manager.delegateManager prepareDayView:self];
 }
 
+// UITapGestureRecognizer事件
 - (void)didTouch
 {
     [_manager.delegateManager didTouchDayView:self];

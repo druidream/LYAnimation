@@ -43,13 +43,13 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    NSLog(@"%s", __FUNCTION__);
+    
 }
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    NSLog(@"%s", __FUNCTION__);
+
     VIEW_WIDTH = self.frame.size.width;
     VIEW_HEIGHT = self.frame.size.height;
     DIAMETER = VIEW_HEIGHT;

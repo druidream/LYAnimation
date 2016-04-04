@@ -15,6 +15,8 @@
 
 @property (nonatomic, readonly) NSArray *dayViews;
 
+@property (nonatomic, readonly) UILabel *selectIndicator;
+
 /*!
  * Must be call if override the class
  */
