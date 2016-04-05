@@ -15,4 +15,9 @@
 
 - (void)reload;
 
+// LYCalendar
+@optional
+- (void)compactMode;
+- (void)fullMode;
+
 @end

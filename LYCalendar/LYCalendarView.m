@@ -131,7 +131,58 @@
     label.font = [UIFont fontWithName:@"RTWSBanHeiG0v1-Regular" size:36.];
     label.backgroundColor = [UIColor menuBackgroundColor];
     
+    // Menu中添加年份
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    UILabel *yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth / 4 + 20, 30, 40, 14)];
+    yearLabel.font = [UIFont fontWithName:@"RTWSBanHeiG0v1-Regular" size:14.];
+    yearLabel.textColor = [UIColor menuSubFontColor];
+    [label addSubview:yearLabel];
+    yearLabel.hidden = YES;
+    
     return label;
+}
+
+
+- (void)prepareMenuItemView:(UIView *)menuItemView date:(NSDate *)date
+{
+    
+    NSString *text = nil;
+    
+    if(date){
+        NSCalendar *calendar = _calendarManager.dateHelper.calendar;
+        NSDateComponents *comps = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
+        NSInteger currentMonthIndex = comps.month;
+        
+        static NSDateFormatter *dateFormatter = nil;
+        if(!dateFormatter){
+            dateFormatter = [_calendarManager.dateHelper createDateFormatter];
+        }
+        
+        dateFormatter.timeZone = _calendarManager.dateHelper.calendar.timeZone;
+        dateFormatter.locale = _calendarManager.dateHelper.calendar.locale;
+        
+        while(currentMonthIndex <= 0){
+            currentMonthIndex += 12;
+        }
+        
+        // LYCalendar
+        text = [NSString stringWithFormat:@"%ld", (long)currentMonthIndex];
+        
+        UILabel *yearLabel = menuItemView.subviews[0];
+        yearLabel.text = [NSString stringWithFormat:@"%ld", (long)comps.year];
+        
+        NSDateComponents *componentsA = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
+        NSDateComponents *componentsB = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:[NSDate date]];
+        
+        if (componentsA.year == componentsB.year && componentsA.month == componentsB.month) {
+            yearLabel.hidden = NO;
+        } else {
+            yearLabel.hidden = YES;
+        }
+        yearLabel.hidden = NO;
+    }
+    
+    [(UILabel *)menuItemView setText:text];
 }
 
 // 日历day view
@@ -217,7 +268,6 @@
 // 日历weekday点击事件
 - (void)calendar:(JTCalendarManager *)calendar didTouchWeekDayView:(NSUInteger)weekDayIndex
 {
-    
     NSCalendar *cal = _calendarManager.dateHelper.calendar;
     NSDateComponents *componentsCurrentDate = [cal components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitWeekOfMonth fromDate:_dateSelected];
     
@@ -270,8 +320,9 @@
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded ||
         gestureRecognizer.state == UIGestureRecognizerStateFailed ||
         gestureRecognizer.state == UIGestureRecognizerStateCancelled) {
-        // 拖动结束，计算位移决定拖动生效或者取消
-        if ([gestureRecognizer translationInView:self.calendarContentView].y < _gestureThreshold) {
+        // 拖动结束，计算位移决定拖动生效或者取消。可能是负数，需要fabs
+        CGFloat transitionY = fabs([gestureRecognizer translationInView:self.calendarContentView].y);
+        if (transitionY < _gestureThreshold) {
             if (!_collapsed) { // 展开状态开始，回到展开状态
                 [self expandWithVelocity:0];
             } else { // 缩起状态开始，回到缩起状态
@@ -314,7 +365,9 @@
                     return;
                 }
                 CGFloat toFrameY = tmpViewHeight;
-                CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, self.associatedView.frame.size.height);
+                // 60 nav, 49 tab
+                CGFloat toHeightY = [UIScreen mainScreen].bounds.size.height - self.frame.size.height - 60 - 49;
+                CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, toHeightY);
                 self.associatedView.frame = toFrame;
                 
                 // menu view
@@ -449,13 +502,22 @@
             return;
         }
         CGFloat toFrameY = _calendarWeekdayViewHeight;
-        CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, self.associatedView.frame.size.height);
+        // 60 nav, 49 tab
+        CGFloat toHeightY = [UIScreen mainScreen].bounds.size.height - self.frame.size.height - 60 - 49;
+        CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, toHeightY);
         self.associatedView.frame = toFrame;
         
     } completion:^(BOOL finished) {
         // 滑动成功后禁用水平scroll，一定要配对使用
         if (finished) {
             _calendarContentView.scrollEnabled = NO;
+            [[self getCurrentMonth] collapse];
+//            for (UIView<JTCalendarWeek> *weekView in currentMonth.subviews) {
+//                
+//                if ([weekView respondsToSelector:@selector(startDate)]) {
+//                    weekView.hidden = YES;
+//                }
+//            }
         }
     }];
 }
@@ -467,7 +529,9 @@
     
     for (int i = 0; i < currentMonth.subviews.count; i++) {
         
-        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1. initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+
+//        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1. initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             
             // menu view
             CGFloat menuMoveToCenterY = _calendarMenuViewHeight / 2;
@@ -492,13 +556,27 @@
                 return;
             }
             CGFloat toFrameY = _viewHeight;
-            CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, self.associatedView.frame.size.height);
+            // 60 nav, 49 tab
+            CGFloat toHeightY = [UIScreen mainScreen].bounds.size.height - self.frame.size.height - 60 - 49;
+            CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, toHeightY);
             self.associatedView.frame = toFrame;
         } completion:^(BOOL finished) {
             // 滑动成功后启用水平scroll，一定要配对使用
             if (finished) {
                 _calendarContentView.scrollEnabled = YES;
+                [[self getCurrentMonth] expand];
             }
+            
+//            // 联动view有一个向下的推力
+//            POPSpringAnimation *animation = [POPSpringAnimation animation];
+//            animation.property = [POPAnimatableProperty propertyWithName:kPOPViewBounds];
+//            animation.fromValue = [NSValue valueWithCGRect:self.associatedView.frame];
+//            animation.toValue = [NSValue valueWithCGRect:self.associatedView.frame];
+//            animation.velocity = @5.;
+//            animation.springBounciness = 15.0;
+//            animation.springSpeed = 5;
+//            
+//            [self.associatedView pop_addAnimation:animation forKey:nil];
         }];
     }
 }
@@ -514,9 +592,17 @@
     _calendarContentView.layer.masksToBounds = NO;
 }
 
-- (UIView *)getCurrentMonth
+- (UIView<JTCalendarPage> *)getCurrentMonth
 {
     return [_calendarContentView getCurrentPageView];
+}
+
+- (UIView *)getWeekdayView
+{
+    if (_calendarContentView.subviews.count > 0) {
+        return _calendarContentView.subviews[0];
+    }
+    return nil;
 }
 
 - (BOOL)touchesShouldBegin:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event inContentView:(UIView *)view

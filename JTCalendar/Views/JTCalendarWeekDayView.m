@@ -152,4 +152,14 @@
     [_manager.delegateManager didTouchWeekDayView:touchInWhichRange];
 }
 
+- (void)compactMode
+{
+    _selectIndicator.hidden = NO;
+}
+
+- (void)fullMode
+{
+    _selectIndicator.hidden = YES;
+}
+
 @end

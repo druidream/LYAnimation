@@ -161,4 +161,15 @@
     
 }
 
+- (void)collapse
+{
+    [_weekDayView compactMode];
+}
+
+- (void)expand
+{
+    [_weekDayView fullMode];
+}
+
+
 @end

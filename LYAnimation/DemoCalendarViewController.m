@@ -25,6 +25,11 @@
     self.navigationController.navigationBar.translucent = NO;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    // fix UITableView动态改变高度时的bug
+    UIView *view = [[UIView alloc] init];
+    view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 1);
+    view.backgroundColor = [UIColor clearColor];
+    self.tableView.tableFooterView = view;
     
     self.calendarView.delegate = self;
     // 设置联动的view，即下方的table view
@@ -38,6 +43,7 @@
 }
 
 #pragma mark - tableview delegate
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 5;

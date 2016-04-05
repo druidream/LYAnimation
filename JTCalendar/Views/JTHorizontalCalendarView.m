@@ -446,7 +446,7 @@ typedef NS_ENUM(NSInteger, JTCalendarPageMode) {
                                        nextDate:_rightView.date];
 }
 
-- (UIView *)getCurrentPageView
+- (UIView<JTCalendarPage> *)getCurrentPageView
 {
     
     switch (_pageMode) {

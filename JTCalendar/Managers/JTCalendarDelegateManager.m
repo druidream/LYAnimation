@@ -64,12 +64,15 @@
         text = [NSString stringWithFormat:@"%ld", (long)currentMonthIndex];
 //        text = [[dateFormatter standaloneMonthSymbols][currentMonthIndex - 1] capitalizedString];
         // Menu中添加年份
-        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-        UILabel *yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth / 4 + 20, 30, 40, 14)];
-        yearLabel.text = [NSString stringWithFormat:@"%ld", (long)comps.year];
-        yearLabel.font = [UIFont fontWithName:@"RTWSBanHeiG0v1-Regular" size:14.];
-        yearLabel.textColor = [UIColor menuSubFontColor];
+//        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+//        UILabel *yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth / 4 + 20, 30, 40, 14)];
+//        yearLabel.text = [NSString stringWithFormat:@"%ld", (long)comps.year];
+//        yearLabel.font = [UIFont fontWithName:@"RTWSBanHeiG0v1-Regular" size:14.];
+//        yearLabel.textColor = [UIColor menuSubFontColor];
 //        [menuItemView addSubview:yearLabel];
+        
+        UILabel *yearLabel = menuItemView.subviews[0];
+        yearLabel.text = [NSString stringWithFormat:@"%ld", (long)comps.year];
         
         
         NSDateComponents *componentsA = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:date];
@@ -80,6 +83,7 @@
         } else {
             yearLabel.hidden = YES;
         }
+        yearLabel.hidden = NO;
     }
         
     [(UILabel *)menuItemView setText:text];

@@ -18,4 +18,8 @@
 
 - (void)reload;
 
+// LYCalendar
+- (void)collapse;
+- (void)expand;
+
 @end
