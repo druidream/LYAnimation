@@ -69,8 +69,8 @@
     selectIndicator.backgroundColor = [UIColor colorWithRed:0.773  green:0.773  blue:0.773 alpha:1];
     selectIndicator.textColor = [UIColor whiteColor];
     selectIndicator.textAlignment = NSTextAlignmentCenter;
-    selectIndicator.text = @"7";
-//    selectIndicator.hidden = YES;
+    selectIndicator.text = @"";
+    selectIndicator.hidden = YES;
     _selectIndicator = selectIndicator;
     
     [self addSubview:selectIndicator];
@@ -143,17 +143,29 @@
 {
     CGFloat dayWidth = self.frame.size.width / NUMBER_OF_DAY_BY_WEEK;
     CGFloat dayHeight = self.frame.size.height;
-    NSUInteger touchInWhichRange = [gesture locationInView:self].x / dayWidth;
-    _selectIndicator.frame = CGRectMake(dayWidth * touchInWhichRange, 0, dayWidth, dayHeight);
+    NSUInteger touchInWeekdayIndex = [gesture locationInView:self].x / dayWidth;
+    _selectIndicator.frame = CGRectMake(dayWidth * touchInWeekdayIndex, 0, dayWidth, dayHeight);
     
-    NSString *text = touchInWhichRange == 0 ? @"7" : [NSString stringWithFormat:@"%lu", (unsigned long)touchInWhichRange];
+    NSString *text = touchInWeekdayIndex == 0 ? @"7" : [NSString stringWithFormat:@"%lu", (unsigned long)touchInWeekdayIndex];
     _selectIndicator.text = text;
     
-    [_manager.delegateManager didTouchWeekDayView:touchInWhichRange];
+    [_manager.delegateManager didTouchWeekDayView:touchInWeekdayIndex];
 }
 
 - (void)compactMode
 {
+    NSDate *today = _manager.date;
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *weekdayComponents = [gregorian components:(NSDayCalendarUnit | NSWeekdayCalendarUnit) fromDate:today];
+    NSInteger day = [weekdayComponents day];
+    NSInteger weekday = [weekdayComponents weekday];
+    
+    CGFloat dayWidth = self.frame.size.width / NUMBER_OF_DAY_BY_WEEK;
+    CGFloat dayHeight = self.frame.size.height;
+    _selectIndicator.frame = CGRectMake(dayWidth * (weekday - 1), 0, dayWidth, dayHeight);
+    
+    _selectIndicator.text = [NSString stringWithFormat:@"%d", day];
+    
     _selectIndicator.hidden = NO;
 }
 

@@ -291,6 +291,7 @@
 - (void)calendar:(JTCalendarManager *)calendar didTouchDayView:(JTCalendarDayView *)dayView
 {
     _dateSelected = dayView.date;
+    [_calendarManager setDate:dayView.date];
     
     // Animation for the circleView
     
@@ -481,6 +482,7 @@
         for (UIView<JTCalendarWeek> *weekView in currentMonth.subviews) {
             // week day view
             weekView.center = CGPointMake(DEFAULT_WIDTH / 2, _calendarWeekdayViewHeight / 2 - _calendarMenuViewHeight);
+//            weekView.center = CGPointMake(DEFAULT_WIDTH / 2, _calendarWeekdayViewHeight / 2);
             // only week view responds to startDate
             if ([weekView respondsToSelector:@selector(startDate)]) {
 //                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarMenuViewHeight);
@@ -517,7 +519,10 @@
 //                if ([weekView respondsToSelector:@selector(startDate)]) {
 //                    weekView.hidden = YES;
 //                }
-//            }
+            //            }
+//            NSLog(@"self.frame:%@", NSStringFromCGRect(self.frame));
+//            NSLog(@"_calendarContentView.frame:%@", NSStringFromCGRect(_calendarContentView.frame));
+//            _calendarContentView.frame = CGRectMake(0, 0, 375, 355);
         }
     }];
 }
