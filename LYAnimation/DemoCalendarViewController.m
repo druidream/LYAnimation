@@ -31,15 +31,20 @@
     view.backgroundColor = [UIColor clearColor];
     self.tableView.tableFooterView = view;
     
-    self.calendarView.delegate = self;
-    // 设置联动的view，即下方的table view
-    self.calendarView.associatedView = self.tableView;
-    
     // 创建测试数据：赞助、活动和有缘人
     [self createRandomSponsors];
     [self createRandomEvents];
+    self.calendarView.delegate = self;
     
-//    [self.calendarView setDate:[NSDate date]];
+    // 设置联动的view，即下方的table view
+    self.calendarView.associatedView = self.tableView;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.calendarView reload];
 }
 
 #pragma mark - tableview delegate

@@ -23,9 +23,10 @@
 
 @interface LYCalendarView : UIView
 
-@property (weak, nonatomic) id<LYCalendarViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet id<LYCalendarViewDelegate> delegate;
 @property (weak, nonatomic) UIView *associatedView;
 
 - (void)setDate:(NSDate *)date;
+- (void)reload;
 
 @end

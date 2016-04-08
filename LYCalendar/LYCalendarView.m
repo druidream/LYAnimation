@@ -116,8 +116,6 @@
             _calendarWeekdayViewHeight = _calendarWeekViewHeight / 2;
         }
     }
-    
-    [_calendarManager reload];
 }
 
 #pragma mark - Calendar Delegate
@@ -345,130 +343,141 @@
 {
     if ([keyPath isEqualToString:@"gestureTransitionY"]) {
         
-        if (!_collapsed) { // 展开状态，向上拖动
-            // 不能再向下拖动
-            if (_gestureTransitionY > 0) {
-                return;
-            }
-            
-            if (fabs(_gestureTransitionY) <= _gestureThreshold) { // 小于阈值，跟随手势进行位移
-                // 手势进度，范围 0 到 1
-                CGFloat gestureProgress = (fabs(_gestureTransitionY) / _gestureThreshold);
-                
-                UIView *currentMonth = [self getCurrentMonth];
-                
-                // self
-                CGFloat tmpViewHeight = _viewHeight * (1 - 0.5 * gestureProgress);
-                self.frame = CGRectMake(0, 0, DEFAULT_WIDTH, tmpViewHeight);
-                
-                // 处理外部联动view
-                if (!self.associatedView) {
-                    return;
-                }
-                CGFloat toFrameY = tmpViewHeight;
-                // 60 nav, 49 tab
-                CGFloat toHeightY = [UIScreen mainScreen].bounds.size.height - self.frame.size.height - 60 - 49;
-                CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, toHeightY);
-                self.associatedView.frame = toFrame;
-                
-                // menu view
-                // 位移比例
-                CGFloat heightRatio = _calendarMenuViewHeight / _viewHeight;
-//                CGFloat menuTransitionCenterY = _calendarMenuViewHeight / 2 - fabs(_gestureTransitionY) * heightRatio * gestureProgress ;
-                CGFloat menuTransitionCenterY = - _calendarMenuViewHeight / 2 + tmpViewHeight * heightRatio;
-                _calendarMenuView.center = CGPointMake(DEFAULT_WIDTH / 2, menuTransitionCenterY);
-                
-                // subviews.count=7，第一个weekday view，后六个是week view
-                for (int i = 0; i < currentMonth.subviews.count; i++) {
-                    // 位移变化计算
-                    UIView<JTCalendarWeek> *weekView = currentMonth.subviews[i];
-//                    CGFloat originCenterY = _calendarContentHeight - _calendarWeekViewHeight * (currentMonth.subviews.count - i) + _calendarWeekViewHeight / 2;
-                    
-                    heightRatio = (_calendarMenuViewHeight + _calendarWeekdayViewHeight + _calendarWeekViewHeight * i - _calendarWeekViewHeight / 2) / _viewHeight;
-                    
-                    if (i == 0) { // week day view
-                        //                        originCenterY = _calendarWeekdayViewHeight / 2;
-                        heightRatio = (_calendarMenuViewHeight + _calendarWeekdayViewHeight / 2) / _viewHeight;
-                    }
-                    
-//                    CGPoint transitionCenter = CGPointMake(weekView.center.x, originCenterY - fabs(_gestureTransitionY) * heightRatio * gestureProgress);
-                    CGPoint transitionCenter = CGPointMake(DEFAULT_WIDTH / 2, tmpViewHeight * heightRatio - _calendarMenuViewHeight);
-                    weekView.center = transitionCenter;
-
-                    // alpha变化计算，当前周不改变alpha，其他周alpha降低
-                    if ([weekView respondsToSelector:@selector(startDate)]) { // weekday view没有这个方法，不判断会crash
-                        if ([_calendarManager.dateHelper date:weekView.startDate isTheSameWeekThan:[NSDate date]]) {
-                            // do nothing for this week
-                        } else {
-                            weekView.alpha = 1 - 0.5 * fabs(_gestureTransitionY) / _gestureThreshold;
-                        }
-                    }
-                }
-            } else { // 大于阈值，拖动成功，执行剩余动画
-                CGFloat velocityY = [_panGestureRecognizer velocityInView:self].y;
-                [self collapseWithVelocity:velocityY];
-                _collapsed = YES;
-            }
-        } else { // 收起状态，向下拖动
-            // 不能再向上拖动
-            if (_gestureTransitionY < 0) {
-                return;
-            }
-            
-            if (fabs(_gestureTransitionY) <= _gestureThreshold) { // 小于阈值，跟随手势进行位移
-                // 手势进度，范围 0 到 1
-                CGFloat gestureProgress = (fabs(_gestureTransitionY) / _gestureThreshold);
-                
-                // self
-                CGFloat tmpViewHeight = _viewHeight * gestureProgress * 0.5 + _calendarMenuViewHeight;
-                self.frame = CGRectMake(0, 0, DEFAULT_WIDTH, tmpViewHeight);
-                
-                // 处理外部联动view
-                if (!self.associatedView) {
-                    return;
-                }
-                CGFloat toFrameY = tmpViewHeight;
-                CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, self.associatedView.frame.size.height);
-                self.associatedView.frame = toFrame;
-                
-                // menu view
-                CGFloat heightRatio = _calendarMenuViewHeight / _calendarHeight;
-                CGFloat menuTransitionCenterY = - _calendarMenuViewHeight / 2 + fabs(_gestureTransitionY) * heightRatio * gestureProgress * 0.5;
-                _calendarMenuView.center = CGPointMake(DEFAULT_WIDTH / 2, menuTransitionCenterY);
-                
-                // week view
-                UIView *currentMonth = [self getCurrentMonth];
-                
-                for (int i = 0; i < currentMonth.subviews.count; i++) {
-                    // 位移变化计算
-                    UIView<JTCalendarWeek> *weekView = currentMonth.subviews[i];
-                    CGFloat originCenterY = - _calendarMenuViewHeight;
-                    if (i == 0) {
-                        originCenterY = _calendarWeekdayViewHeight / 2 - _calendarMenuViewHeight;
-                    }
-                    CGFloat heightRatio = (_calendarWeekdayViewHeight + _calendarWeekViewHeight * i) / _calendarContentHeight;
-                    CGPoint transitionCenter = CGPointMake(DEFAULT_WIDTH / 2, originCenterY + _gestureTransitionY * heightRatio *gestureProgress);
-                    
-                    weekView.center = transitionCenter;
-                    
-                    // alpha变化计算，当前周不改变alpha，其他周alpha降低
-                    if ([weekView respondsToSelector:@selector(startDate)]) { // weekday view没有这个方法，不判断会crash
-                        if ([_calendarManager.dateHelper date:weekView.startDate isTheSameWeekThan:[NSDate date]]) {
-                            // do nothing for this week
-                        } else {
-                            weekView.alpha = gestureProgress * 0.5;
-                        }
-                    }
-                }
-            } else { // 大于阈值，拖动成功，执行剩余动画
-                [self expandWithVelocity:0];
-                _collapsed = NO;
-            }
+        if (!_collapsed) {
+            // 展开状态，向上拖动
+            [self collapseWhileDragging];
+        } else {
+            // 收起状态，向下拖动
+            [self expandWhileDragging];
         }
     }
 }
 
-#pragma mark - Implementation
+#pragma mark - animation logic
+
+- (void)collapseWhileDragging
+{
+    // 不能再向下拖动
+    if (_gestureTransitionY > 0) {
+        return;
+    }
+    
+    if (fabs(_gestureTransitionY) <= _gestureThreshold) { // 小于阈值，跟随手势进行位移
+        // 手势进度，范围 0 到 1
+        CGFloat gestureProgress = (fabs(_gestureTransitionY) / _gestureThreshold);
+        
+        UIView *currentMonth = [self getCurrentMonth];
+        
+        // self
+        CGFloat tmpViewHeight = _viewHeight * (1 - 0.5 * gestureProgress);
+        self.frame = CGRectMake(0, 0, DEFAULT_WIDTH, tmpViewHeight);
+        
+        // 处理外部联动view
+        if (!self.associatedView) {
+            return;
+        }
+        CGFloat toFrameY = tmpViewHeight;
+        // 60 nav, 49 tab
+        CGFloat toHeightY = [UIScreen mainScreen].bounds.size.height - self.frame.size.height - 60 - 49;
+        CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, toHeightY);
+        self.associatedView.frame = toFrame;
+        
+        // menu view
+        CGFloat heightRatio = _calendarMenuViewHeight / _viewHeight; // 位移比例
+        CGFloat menuTransitionCenterY = - _calendarMenuViewHeight / 2 + tmpViewHeight * heightRatio;
+        _calendarMenuView.center = CGPointMake(DEFAULT_WIDTH / 2, menuTransitionCenterY);
+        
+        // subviews.count=7，第一个weekday view，后六个是week view
+        for (int i = 0; i < currentMonth.subviews.count; i++) {
+            // 位移变化计算
+            UIView<JTCalendarWeek> *weekView = currentMonth.subviews[i];
+
+            heightRatio = (_calendarMenuViewHeight + _calendarWeekdayViewHeight + _calendarWeekViewHeight * i - _calendarWeekViewHeight / 2) / _viewHeight;
+            
+            if (i == 0) { // week day view
+                heightRatio = (_calendarMenuViewHeight + _calendarWeekdayViewHeight / 2) / _viewHeight;
+            }
+            
+            CGPoint transitionCenter = CGPointMake(DEFAULT_WIDTH / 2, tmpViewHeight * heightRatio - _calendarMenuViewHeight);
+            weekView.center = transitionCenter;
+            
+            // alpha变化计算，当前周不改变alpha，其他周alpha降低
+            if ([weekView respondsToSelector:@selector(startDate)]) { // weekday view没有这个方法，不判断会crash
+                if ([_calendarManager.dateHelper date:weekView.startDate isTheSameWeekThan:[NSDate date]]) {
+                    // do nothing for this week
+                } else {
+                    weekView.alpha = 1 - 0.5 * fabs(_gestureTransitionY) / _gestureThreshold;
+                }
+            }
+        }
+    } else { // 大于阈值，拖动成功，执行剩余动画
+        CGFloat velocityY = [_panGestureRecognizer velocityInView:self].y;
+        [self collapseWithVelocity:velocityY];
+        _collapsed = YES;
+    }
+}
+
+- (void)expandWhileDragging
+{
+    // 不能再向上拖动
+    if (_gestureTransitionY < 0) {
+        return;
+    }
+    
+    if (fabs(_gestureTransitionY) <= _gestureThreshold) { // 小于阈值，跟随手势进行位移
+        // 手势进度，范围 0 到 1
+        CGFloat gestureProgress = (fabs(_gestureTransitionY) / _gestureThreshold);
+        
+        // self
+//        CGFloat tmpViewHeight = _viewHeight * gestureProgress * 0.5 + _calendarMenuViewHeight;
+        CGFloat tmpViewHeight = _viewHeight * gestureProgress * 0.5 + _calendarWeekdayViewHeight;
+        self.frame = CGRectMake(0, 0, DEFAULT_WIDTH, tmpViewHeight);
+        
+        // 处理外部联动view
+        if (!self.associatedView) {
+            return;
+        }
+        CGFloat toFrameY = tmpViewHeight;
+        CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, self.associatedView.frame.size.height);
+        self.associatedView.frame = toFrame;
+        
+        // menu view
+        CGFloat heightRatio = _calendarMenuViewHeight / _calendarHeight;
+        CGFloat menuTransitionCenterY = - _calendarMenuViewHeight / 2 + fabs(_gestureTransitionY) * heightRatio * gestureProgress * 0.5;
+        _calendarMenuView.center = CGPointMake(DEFAULT_WIDTH / 2, menuTransitionCenterY);
+        
+        // week view
+        UIView *currentMonth = [self getCurrentMonth];
+        
+        for (int i = 0; i < currentMonth.subviews.count; i++) {
+            // 位移变化计算
+            UIView<JTCalendarWeek> *weekView = currentMonth.subviews[i];
+//            CGFloat originCenterY = - _calendarMenuViewHeight;
+            CGFloat originCenterY = 0;
+            if (i == 0) {
+//                originCenterY = _calendarWeekdayViewHeight / 2 - _calendarMenuViewHeight;
+                originCenterY = _calendarWeekdayViewHeight / 2;
+            }
+            CGFloat heightRatio = (_calendarWeekdayViewHeight + _calendarWeekViewHeight * i) / _calendarContentHeight;
+            CGPoint transitionCenter = CGPointMake(DEFAULT_WIDTH / 2, originCenterY + _gestureTransitionY * heightRatio *gestureProgress);
+            
+            weekView.center = transitionCenter;
+            
+            // alpha变化计算，当前周不改变alpha，其他周alpha降低
+            if ([weekView respondsToSelector:@selector(startDate)]) { // weekday view没有这个方法，不判断会crash
+                if ([_calendarManager.dateHelper date:weekView.startDate isTheSameWeekThan:[NSDate date]]) {
+                    // do nothing for this week
+                } else {
+                    weekView.alpha = gestureProgress * 0.5 + 0.5;
+                    
+                }
+            }
+        }
+    } else { // 大于阈值，拖动成功，执行剩余动画
+        [self expandWithVelocity:0];
+        _collapsed = NO;
+    }
+}
 
 // 日历收起。上滑成功 或 下拉取消 时调用
 - (void)collapseWithVelocity:(CGFloat)velocity
@@ -478,15 +487,14 @@
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1. initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         // menu view
         _calendarMenuView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarMenuViewHeight / 2);
+        // content view必须要包含weekday view，否则weekday view的点击事件不能生效
+        _calendarContentView.frame = CGRectMake(0, 0, DEFAULT_WIDTH, _calendarContentView.bounds.size.height);
         // week view
         for (UIView<JTCalendarWeek> *weekView in currentMonth.subviews) {
-            // week day view
-            weekView.center = CGPointMake(DEFAULT_WIDTH / 2, _calendarWeekdayViewHeight / 2 - _calendarMenuViewHeight);
-//            weekView.center = CGPointMake(DEFAULT_WIDTH / 2, _calendarWeekdayViewHeight / 2);
             // only week view responds to startDate
             if ([weekView respondsToSelector:@selector(startDate)]) {
-//                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarMenuViewHeight);
-                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarMenuViewHeight - _calendarWeekViewHeight / 2);
+//                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarWeekViewHeight / 2 - _calendarMenuViewHeight);
+                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, - _calendarWeekViewHeight / 2);
                 // this week
                 if ([_calendarManager.dateHelper date:weekView.startDate isTheSameWeekThan:[NSDate date]]) {
                     // do not change alpha
@@ -494,6 +502,10 @@
                     // hides other week views
                     weekView.alpha = 0.;
                 }
+            } else {
+                // week day view
+//                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, _calendarWeekdayViewHeight / 2 - _calendarMenuViewHeight);
+                weekView.center = CGPointMake(DEFAULT_WIDTH / 2, _calendarWeekdayViewHeight / 2);
             }
         };
         // self
@@ -509,20 +521,11 @@
         CGRect toFrame = CGRectMake(0, toFrameY, DEFAULT_WIDTH, toHeightY);
         self.associatedView.frame = toFrame;
         
+        [[self getCurrentMonth] collapse];
     } completion:^(BOOL finished) {
         // 滑动成功后禁用水平scroll，一定要配对使用
         if (finished) {
             _calendarContentView.scrollEnabled = NO;
-            [[self getCurrentMonth] collapse];
-//            for (UIView<JTCalendarWeek> *weekView in currentMonth.subviews) {
-//                
-//                if ([weekView respondsToSelector:@selector(startDate)]) {
-//                    weekView.hidden = YES;
-//                }
-            //            }
-//            NSLog(@"self.frame:%@", NSStringFromCGRect(self.frame));
-//            NSLog(@"_calendarContentView.frame:%@", NSStringFromCGRect(_calendarContentView.frame));
-//            _calendarContentView.frame = CGRectMake(0, 0, 375, 355);
         }
     }];
 }
@@ -535,13 +538,14 @@
     for (int i = 0; i < currentMonth.subviews.count; i++) {
         
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-
-//        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1. initialSpringVelocity:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             
             // menu view
             CGFloat menuMoveToCenterY = _calendarMenuViewHeight / 2;
             _calendarMenuView.center = CGPointMake(DEFAULT_WIDTH / 2, menuMoveToCenterY);
             _calendarMenuView.alpha = 1.;
+            
+            // content view
+            _calendarContentView.frame = CGRectMake(0, _calendarMenuViewHeight, DEFAULT_WIDTH, _calendarContentHeight);
             
             UIView<JTCalendarWeek> *weekView = currentMonth.subviews[i];
             // week day view
@@ -619,6 +623,11 @@
 - (void)setDate:(NSDate *)date
 {
     [_calendarManager setDate:date];
+}
+
+- (void)reload
+{
+    [_calendarManager reload];
 }
 
 @end

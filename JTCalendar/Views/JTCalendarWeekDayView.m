@@ -144,10 +144,24 @@
     CGFloat dayWidth = self.frame.size.width / NUMBER_OF_DAY_BY_WEEK;
     CGFloat dayHeight = self.frame.size.height;
     NSUInteger touchInWeekdayIndex = [gesture locationInView:self].x / dayWidth;
-    _selectIndicator.frame = CGRectMake(dayWidth * touchInWeekdayIndex, 0, dayWidth, dayHeight);
     
-    NSString *text = touchInWeekdayIndex == 0 ? @"7" : [NSString stringWithFormat:@"%lu", (unsigned long)touchInWeekdayIndex];
-    _selectIndicator.text = text;
+    NSCalendar *cal = _manager.dateHelper.calendar;
+    NSDateComponents *componentsCurrentDate = [cal components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitWeekOfMonth fromDate:_manager.date];
+    
+    NSDateComponents *componentsNewDate = [NSDateComponents new];
+    
+    componentsNewDate.year = componentsCurrentDate.year;
+    componentsNewDate.month = componentsCurrentDate.month;
+    componentsNewDate.weekOfMonth = componentsCurrentDate.weekOfMonth;
+    componentsNewDate.weekday = touchInWeekdayIndex + 1;
+    
+    NSDate *newDate = [cal dateFromComponents:componentsNewDate];
+    [_manager setDate:newDate];
+    NSDateComponents *weekdayComponents = [cal components:(NSDayCalendarUnit | NSWeekdayCalendarUnit) fromDate:newDate];
+    NSInteger day = [weekdayComponents day];
+    
+    _selectIndicator.frame = CGRectMake(dayWidth * touchInWeekdayIndex, 0, dayWidth, dayHeight);
+    _selectIndicator.text = [NSString stringWithFormat:@"%ld", (long)day];
     
     [_manager.delegateManager didTouchWeekDayView:touchInWeekdayIndex];
 }
@@ -164,7 +178,7 @@
     CGFloat dayHeight = self.frame.size.height;
     _selectIndicator.frame = CGRectMake(dayWidth * (weekday - 1), 0, dayWidth, dayHeight);
     
-    _selectIndicator.text = [NSString stringWithFormat:@"%d", day];
+    _selectIndicator.text = [NSString stringWithFormat:@"%ld", (long)day];
     
     _selectIndicator.hidden = NO;
 }
