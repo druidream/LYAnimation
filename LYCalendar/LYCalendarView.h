@@ -18,6 +18,7 @@
 - (BOOL)hasCoincidenceForDay:(NSDate *)date;// 有缘人
 
 - (void)dateDidSelect:(NSDate *)date;       // 选中日期后的回调
+- (void)dateRangeDidSelectFrom:(NSDate *)fromDate to:(NSDate *)toDate; // 选中日期区段的回调
 
 @end
 
@@ -28,5 +29,8 @@
 
 - (void)setDate:(NSDate *)date;
 - (void)reload;
+
+- (void)beginSelectMode;
+- (void)endSelectMode;
 
 @end

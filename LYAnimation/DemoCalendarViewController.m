@@ -38,8 +38,11 @@
     
     // 设置联动的view，即下方的table view
     self.calendarView.associatedView = self.tableView;
+    
+    [self createBarButtons];
 }
 
+// 显示完成后reload一次以展示当月数据
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -109,6 +112,13 @@
     self.navigationItem.title = [[self dateFormatter] stringFromDate:date];
 }
 
+- (void)dateRangeDidSelectFrom:(NSDate *)fromDate to:(NSDate *)toDate
+{
+    NSString *message = [NSString stringWithFormat:@"%@ - %@", [[self dateFormatter] stringFromDate:fromDate], [[self dateFormatter] stringFromDate:toDate]];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"选中日期区间" message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
+
 #pragma mark - 测试用数据
 
 - (void)createRandomEvents
@@ -158,6 +168,13 @@
     }
     
     return dateFormatter;
+}
+
+- (void)createBarButtons
+{
+    UIBarButtonItem *beginSelectButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self.calendarView action:@selector(beginSelectMode)];
+    UIBarButtonItem *endSelectButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self.calendarView action:@selector(endSelectMode)];
+    self.navigationItem.rightBarButtonItems = @[beginSelectButton, endSelectButton];
 }
 
 @end

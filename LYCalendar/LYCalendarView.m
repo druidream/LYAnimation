@@ -27,15 +27,22 @@
     CGFloat _calendarWeekdayViewHeight;
     
     CGFloat _viewHeight;
+    
+    // 日期区段选择
+    NSMutableArray *_datesSelected;
+    NSDate *_selectStartDate;
 }
 // JTCalendar
 @property (strong, nonatomic) JTCalendarMenuView *calendarMenuView;
 @property (strong, nonatomic) JTHorizontalCalendarView *calendarContentView;
 @property (strong, nonatomic) JTCalendarManager *calendarManager;
 //@property (weak, nonatomic) NSLayoutConstraint *calendarContentViewHeight;
-@property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+@property (strong, nonatomic) UIPanGestureRecognizer *scalerGestureRecognizer; // 日历缩放手势
+@property (strong, nonatomic) UIPanGestureRecognizer *selectGestureRecognizer; // 日期选择手势
 
 @property (nonatomic, assign) CGFloat gestureTransitionY;         // 手势拖动Y轴位移
+
+@property (nonatomic, assign) BOOL selectMode;
 
 @end
 
@@ -85,9 +92,12 @@
     [self addSubview:_calendarContentView];
     
     // 创建拖动手势
-    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
-    _panGestureRecognizer.delegate = self;
-    [self addGestureRecognizer:_panGestureRecognizer];
+    _scalerGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
+    _scalerGestureRecognizer.delegate = self;
+    [self addGestureRecognizer:_scalerGestureRecognizer];
+    
+    _selectGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(selectGestureRecognized:)];
+    _selectGestureRecognizer.delegate = self;
     
     // KVO观察手势位移，影响拖动时日历的缩放
     [self addObserver:self forKeyPath:@"gestureTransitionY" options:NSKeyValueObservingOptionNew context:nil];
@@ -289,7 +299,7 @@
 - (void)calendar:(JTCalendarManager *)calendar didTouchDayView:(JTCalendarDayView *)dayView
 {
     _dateSelected = dayView.date;
-    [_calendarManager setDate:dayView.date];
+//    [_calendarManager setDate:dayView.date];
     
     // Animation for the circleView
     
@@ -298,14 +308,14 @@
     
     // Load the previous or next page if touch a day from another month
     
-    if(![_calendarManager.dateHelper date:_calendarContentView.date isTheSameMonthThan:dayView.date]){
-        if([_calendarContentView.date compare:dayView.date] == NSOrderedAscending){
-            [_calendarContentView loadNextPageWithAnimation];
-        }
-        else{
-            [_calendarContentView loadPreviousPageWithAnimation];
-        }
-    }
+//    if(![_calendarManager.dateHelper date:_calendarContentView.date isTheSameMonthThan:dayView.date]){
+//        if([_calendarContentView.date compare:dayView.date] == NSOrderedAscending){
+//            [_calendarContentView loadNextPageWithAnimation];
+//        }
+//        else{
+//            [_calendarContentView loadPreviousPageWithAnimation];
+//        }
+//    }
     
     if ([self.delegate respondsToSelector:@selector(dateDidSelect:)]) {
         [self.delegate dateDidSelect:dayView.date];
@@ -334,6 +344,52 @@
         // 拖动中，触发KVO
         self.gestureTransitionY = [gestureRecognizer translationInView:self.calendarContentView].y;
         
+    }
+}
+
+- (void)selectGestureRecognized:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded ||
+        gestureRecognizer.state == UIGestureRecognizerStateFailed ||
+        gestureRecognizer.state == UIGestureRecognizerStateCancelled) {
+        // 拖动结束
+        CGPoint p = [gestureRecognizer locationInView:self.calendarContentView];
+        
+        NSInteger dayInWeek = (p.x - DEFAULT_WIDTH) / (DEFAULT_WIDTH / 7);
+        NSInteger weekInMonth = (p.y - _calendarWeekdayViewHeight) / _calendarWeekViewHeight;
+        NSDate *selectEndDate = [[self getCurrentMonth].subviews[weekInMonth+1].subviews[dayInWeek] date];
+        
+        [self colorDateRangeFrom:_selectStartDate toDate:selectEndDate];
+        
+        NSDate *dateA, *dateB;
+        if ([_calendarManager.dateHelper date:_selectStartDate isEqualOrBefore:selectEndDate]) {
+            dateA = _selectStartDate;
+            dateB = selectEndDate;
+        } else {
+            dateB = _selectStartDate;
+            dateA = selectEndDate;
+        }
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(dateRangeDidSelectFrom:to:)]) {
+            [self.delegate dateRangeDidSelectFrom:dateA to:dateB];
+        }
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan)  {
+        // 拖动开始
+        [_calendarManager reload];
+        
+        CGPoint p = [gestureRecognizer locationInView:self.calendarContentView];
+        
+        NSInteger dayInWeek = (p.x - DEFAULT_WIDTH) / (DEFAULT_WIDTH / 7);
+        NSInteger weekInMonth = (p.y - _calendarWeekdayViewHeight) / _calendarWeekViewHeight;
+        _selectStartDate = [[self getCurrentMonth].subviews[weekInMonth+1].subviews[dayInWeek] date];
+    } else {
+        CGPoint p = [gestureRecognizer locationInView:self.calendarContentView];
+        
+        NSInteger dayInWeek = (p.x - DEFAULT_WIDTH) / (DEFAULT_WIDTH / 7);
+        NSInteger weekInMonth = (p.y - _calendarWeekdayViewHeight) / _calendarWeekViewHeight;
+        NSDate *selectEndDate = [[self getCurrentMonth].subviews[weekInMonth+1].subviews[dayInWeek] date];
+        
+        [self colorDateRangeFrom:_selectStartDate toDate:selectEndDate];
     }
 }
 
@@ -411,7 +467,7 @@
             }
         }
     } else { // 大于阈值，拖动成功，执行剩余动画
-        CGFloat velocityY = [_panGestureRecognizer velocityInView:self].y;
+        CGFloat velocityY = [_scalerGestureRecognizer velocityInView:self].y;
         [self collapseWithVelocity:velocityY];
         _collapsed = YES;
     }
@@ -628,6 +684,52 @@
 - (void)reload
 {
     [_calendarManager reload];
+}
+
+#pragma mark - 日期区段选择
+
+- (void)beginSelectMode
+{
+    self.selectMode = YES;
+    [self removeGestureRecognizer:_scalerGestureRecognizer];
+    [self addGestureRecognizer:_selectGestureRecognizer];
+    _calendarContentView.scrollEnabled = NO;
+}
+
+- (void)endSelectMode
+{
+    self.selectMode = NO;
+    [self removeGestureRecognizer:_selectGestureRecognizer];
+    [self addGestureRecognizer:_scalerGestureRecognizer];
+    _calendarContentView.scrollEnabled = YES;
+}
+
+- (void)colorDateRangeFrom:(NSDate *)fromDate toDate:(NSDate *)toDate
+{
+    if (!fromDate || !toDate) {
+        return;
+    }
+    
+    NSDate *dateA, *dateB;
+    if ([_calendarManager.dateHelper date:fromDate isEqualOrBefore:toDate]) {
+        dateA = fromDate;
+        dateB = toDate;
+    } else {
+        dateB = fromDate;
+        dateA = toDate;
+    }
+    
+    for (int i = 1; i < [self getCurrentMonth].subviews.count; i++) {
+        UIView<JTCalendarWeek> *week = [self getCurrentMonth].subviews[i];
+        for (JTCalendarDayView *dayView in week.subviews) {
+            if ([_calendarManager.dateHelper date:dayView.date isEqualOrAfter:dateA andEqualOrBefore:dateB]) {
+                // 显示背景色
+                dayView.circleView.hidden = NO;
+            } else {
+                dayView.circleView.hidden = YES;
+            }
+        }
+    }
 }
 
 @end
