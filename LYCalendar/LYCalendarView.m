@@ -18,7 +18,6 @@
     NSDate *_dateSelected;
     
     CGFloat _gestureThreshold;           // 手势阈值，决定拖动成功或取消
-    BOOL _collapsed;                     // 日历状态，NO：展开状态；YES：缩起状态
     
     CGFloat _calendarMenuViewHeight;     // menu栏高度，即月份栏
     CGFloat _calendarContentHeight;      // content区高度，包括week day view和week view
@@ -40,7 +39,6 @@
 @property (strong, nonatomic) UIPanGestureRecognizer *scalerGestureRecognizer; // 日历缩放手势
 @property (strong, nonatomic) UIPanGestureRecognizer *selectGestureRecognizer; // 日期选择手势
 
-@property (nonatomic, assign) CGFloat gestureTransitionY;         // 手势拖动Y轴位移
 
 @property (nonatomic, assign) BOOL selectMode;
 
@@ -117,7 +115,8 @@
     _calendarContentHeight = _calendarContentView.frame.size.height;
     _calendarHeight = _calendarMenuViewHeight + _calendarContentHeight;
     
-    _gestureThreshold = _calendarHeight / 2; // 拖动生效的阈值，不到则恢复原状态
+//    _gestureThreshold = _calendarHeight / 2; // 拖动生效的阈值，不到则恢复原状态
+    _gestureThreshold = 150;
     
     if (_calendarContentView.subviews.count >= 2) {
         UIView *currentMonthView = [self getCurrentMonth];

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DemoSnapViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface DemoSnapViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *indicator;

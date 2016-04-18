@@ -45,13 +45,18 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
     }
-    cell.textLabel.text = @"foo";
+    cell.textLabel.text = [NSString stringWithFormat:@"foo%ld", (long)indexPath.row+1];
     cell.detailTextLabel.text = @"bar";
     cell.imageView.image = [UIImage imageNamed:@"image-placeholder"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    
 }
 
 @end

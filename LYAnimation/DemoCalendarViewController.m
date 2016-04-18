@@ -7,13 +7,14 @@
 //
 
 #import "DemoCalendarViewController.h"
+#import "DemoSnapViewController.h"
 
-@interface DemoCalendarViewController ()
+@interface DemoCalendarViewController ()<UIGestureRecognizerDelegate>
 {
     // 测试用数据源
     NSMutableDictionary *_eventsByDate;
     NSMutableDictionary *_sponsorsByDate;
-    
+    NSMutableDictionary *_coincidencesByDate;
 }
 @end
 
@@ -34,12 +35,17 @@
     // 创建测试数据：赞助、活动和有缘人
     [self createRandomSponsors];
     [self createRandomEvents];
+    [self createRandomCoincidences];
     self.calendarView.delegate = self;
     
     // 设置联动的view，即下方的table view
     self.calendarView.associatedView = self.tableView;
     
     [self createBarButtons];
+    
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureDidRecognized:)];
+    panGesture.delegate = self;
+    [self.tableView addGestureRecognizer:panGesture];
 }
 
 // 显示完成后reload一次以展示当月数据
@@ -78,6 +84,54 @@
     return 70.;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.navigationController pushViewController:[[DemoSnapViewController alloc] init] animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    NSLog(@"viewWillDisappear:%@", NSStringFromCGRect(self.tableView.frame));
+    NSLog(@"%s", __FUNCTION__);
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear:%@", NSStringFromCGRect(self.tableView.frame));
+    NSLog(@"%s", __FUNCTION__);
+}
+
+#pragma mark - scroll delegate
+
+// 处理折叠状态时，拖动tableview也可以展开日历
+- (void)panGestureDidRecognized:(UIPanGestureRecognizer *)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateEnded ||
+        gesture.state == UIGestureRecognizerStateFailed ||
+        gesture.state == UIGestureRecognizerStateCancelled) {
+        // 拖动结束，计算位移决定拖动生效或者取消。可能是负数，需要fabs
+        CGFloat transitionY = fabs([gesture translationInView:self.tableView].y);
+        if (transitionY < 150.) {
+            if (!self.calendarView.collapsed) { // 展开状态开始，回到展开状态
+                [self.calendarView expandWithVelocity:0];
+            } else { // 缩起状态开始，回到缩起状态
+                [self.calendarView collapseWithVelocity:0];
+            }
+        } else {
+            // 拖动成功，已通过KVO执行
+        }
+    } else  {
+        // 拖动中，触发KVO
+        self.calendarView.gestureTransitionY = fabs([gesture translationInView:self.tableView].y);
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return YES;
+}
+
 #pragma mark - calendar delegate
 
 - (BOOL)hasSponsorForDay:(NSDate *)date
@@ -104,6 +158,12 @@
 
 - (BOOL)hasCoincidenceForDay:(NSDate *)date
 {
+    NSString *key = [[self dateFormatter] stringFromDate:date];
+    
+    if(_coincidencesByDate[key] && [_coincidencesByDate[key] count] > 0){
+        return YES;
+    }
+    
     return NO;
 }
 
@@ -156,6 +216,25 @@
         }
         
         [_sponsorsByDate[key] addObject:randomDate];
+    }
+}
+
+- (void)createRandomCoincidences
+{
+    _coincidencesByDate = [NSMutableDictionary new];
+    
+    for(int i = 0; i < 30; ++i){
+        // Generate 30 random dates between now and 60 days later
+        NSDate *randomDate = [NSDate dateWithTimeInterval:(rand() % (3600 * 24 * 60)) sinceDate:[NSDate date]];
+        
+        // Use the date as key for eventsByDate
+        NSString *key = [[self dateFormatter] stringFromDate:randomDate];
+        
+        if(!_coincidencesByDate[key]){
+            _coincidencesByDate[key] = [NSMutableArray new];
+        }
+        
+        [_coincidencesByDate[key] addObject:randomDate];
     }
 }
 

@@ -26,11 +26,16 @@
 
 @property (weak, nonatomic) IBOutlet id<LYCalendarViewDelegate> delegate;
 @property (weak, nonatomic) UIView *associatedView;
+@property (nonatomic, assign) CGFloat gestureTransitionY;         // 手势拖动Y轴位移
+@property (nonatomic, assign) BOOL collapsed;                     // 日历状态，NO：展开状态；YES：缩起状态
 
 - (void)setDate:(NSDate *)date;
 - (void)reload;
 
 - (void)beginSelectMode;
 - (void)endSelectMode;
+
+- (void)collapseWithVelocity:(CGFloat)velocity;
+- (void)expandWithVelocity:(CGFloat)velocity;
 
 @end
