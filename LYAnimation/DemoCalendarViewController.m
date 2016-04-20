@@ -60,7 +60,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return 15;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -108,6 +108,12 @@
 // 处理折叠状态时，拖动tableview也可以展开日历
 - (void)panGestureDidRecognized:(UIPanGestureRecognizer *)gesture
 {
+    // 上拉不触发
+    if ([gesture translationInView:self.tableView].y < 0) {
+        return;
+    }
+    
+    
     if (gesture.state == UIGestureRecognizerStateEnded ||
         gesture.state == UIGestureRecognizerStateFailed ||
         gesture.state == UIGestureRecognizerStateCancelled) {
@@ -123,6 +129,10 @@
             // 拖动成功，已通过KVO执行
         }
     } else  {
+        // scrollview 没有到顶不触发
+        if (self.tableView.contentOffset.y >= 0) {
+            return;
+        }
         // 拖动中，触发KVO
         self.calendarView.gestureTransitionY = fabs([gesture translationInView:self.tableView].y);
     }
