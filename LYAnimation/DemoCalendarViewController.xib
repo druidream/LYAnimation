@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DemoCalendarViewController">
             <connections>
+                <outlet property="calendarHeightConstraint" destination="xah-eT-Y9r" id="KFT-Ao-dmu"/>
                 <outlet property="calendarView" destination="dQD-5c-qkl" id="LaA-VS-wdM"/>
                 <outlet property="tableView" destination="MlB-tI-JNl" id="H03-0L-bbg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

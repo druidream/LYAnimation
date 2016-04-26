@@ -16,6 +16,7 @@
     NSMutableDictionary *_sponsorsByDate;
     NSMutableDictionary *_coincidencesByDate;
 }
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 @end
 
 @implementation DemoCalendarViewController
@@ -92,14 +93,27 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    NSLog(@"viewWillDisappear:%@", NSStringFromCGRect(self.tableView.frame));
+    NSLog(@"viewWillDisappear:%@", NSStringFromCGRect(self.calendarView.frame));
     NSLog(@"%s", __FUNCTION__);
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear:%@", NSStringFromCGRect(self.tableView.frame));
+    NSLog(@"viewDidDisappear:%@", NSStringFromCGRect(self.calendarView.frame));
+    NSLog(@"%s", __FUNCTION__);
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    self.calendarHeightConstraint.constant = self.calendarView.frame.size.height;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
     NSLog(@"%s", __FUNCTION__);
 }
 
@@ -263,7 +277,13 @@
 {
     UIBarButtonItem *beginSelectButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self.calendarView action:@selector(beginSelectMode)];
     UIBarButtonItem *endSelectButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self.calendarView action:@selector(endSelectMode)];
-    self.navigationItem.rightBarButtonItems = @[beginSelectButton, endSelectButton];
+    UIBarButtonItem *testelectButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(testLayout)];
+    self.navigationItem.rightBarButtonItems = @[beginSelectButton, endSelectButton, testelectButton];
+}
+
+- (void)testLayout
+{
+    [self.view layoutSubviews];
 }
 
 @end
