@@ -37,7 +37,7 @@
     mainViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页" image:[UIImage imageNamed:@"first"] tag:1];
     nav2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"日历" image:[UIImage imageNamed:@"second"] tag:2];
     loginViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"登录" image:[UIImage imageNamed:@"first"] tag:3];
-    snapViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"//吸附" image:[UIImage imageNamed:@"second"] tag:4];
+    snapViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"吸附" image:[UIImage imageNamed:@"second"] tag:4];
     
     UITabBarController *controller = [UITabBarController new];
     controller.viewControllers = [NSArray arrayWithObjects:mainViewController,

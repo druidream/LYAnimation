@@ -22,11 +22,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow" translatesAutoresizingMaskIntoConstraints="NO" id="NEs-ik-tal">
-                    <rect key="frame" x="311" y="302" width="64" height="64"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="first" translatesAutoresizingMaskIntoConstraints="NO" id="NEs-ik-tal">
+                    <rect key="frame" x="155" y="529" width="64" height="64"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="64" id="HVx-TQ-kQE"/>
-                        <constraint firstAttribute="width" secondItem="NEs-ik-tal" secondAttribute="height" multiplier="1:1" id="Ze4-uR-fZb"/>
+                        <constraint firstAttribute="width" constant="64" id="L02-Km-R64"/>
+                        <constraint firstAttribute="height" constant="64" id="QRb-Q2-K79"/>
                         <constraint firstAttribute="width" secondItem="NEs-ik-tal" secondAttribute="height" multiplier="1:1" id="d9d-Mb-Wbe"/>
                     </constraints>
                     <variation key="default">
@@ -40,6 +40,8 @@
             <constraints>
                 <constraint firstItem="6YQ-Kk-auO" firstAttribute="top" secondItem="p5K-Mv-84Q" secondAttribute="top" id="12M-Le-eDb"/>
                 <constraint firstItem="6YQ-Kk-auO" firstAttribute="leading" secondItem="p5K-Mv-84Q" secondAttribute="leading" id="2Nx-EL-cdi"/>
+                <constraint firstItem="NEs-ik-tal" firstAttribute="centerX" secondItem="6YQ-Kk-auO" secondAttribute="centerX" id="BiY-ah-pXV"/>
+                <constraint firstAttribute="bottom" secondItem="NEs-ik-tal" secondAttribute="bottom" constant="74" id="JKd-eM-UcQ"/>
                 <constraint firstItem="NEs-ik-tal" firstAttribute="centerY" secondItem="6YQ-Kk-auO" secondAttribute="centerY" id="PWL-eF-brq"/>
                 <constraint firstAttribute="trailing" secondItem="6YQ-Kk-auO" secondAttribute="trailing" id="TC9-vu-puA"/>
                 <constraint firstItem="NEs-ik-tal" firstAttribute="leading" secondItem="6YQ-Kk-auO" secondAttribute="trailing" constant="-287" id="d5s-Gb-2zP"/>
@@ -50,13 +52,15 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
             <variation key="default">
                 <mask key="constraints">
+                    <exclude reference="PWL-eF-brq"/>
                     <exclude reference="d5s-Gb-2zP"/>
                     <exclude reference="eTO-Nj-aaG"/>
+                    <exclude reference="kJd-N9-LL3"/>
                 </mask>
             </variation>
         </view>
     </objects>
     <resources>
-        <image name="arrow" width="128" height="128"/>
+        <image name="first" width="30" height="30"/>
     </resources>
 </document>
