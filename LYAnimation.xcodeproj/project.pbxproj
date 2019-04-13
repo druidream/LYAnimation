@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E03A4B7CDEAD73DF8B2A35C /* libPods-LYAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD927B8A014447C7EC9850C7 /* libPods-LYAnimation.a */; };
 		6ACF304F1CAAD25A0094EC24 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACF304E1CAAD25A0094EC24 /* main.m */; };
 		6ACF30521CAAD25A0094EC24 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACF30511CAAD25A0094EC24 /* AppDelegate.m */; };
 		6ACF305D1CAAD25A0094EC24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ACF305C1CAAD25A0094EC24 /* Assets.xcassets */; };
@@ -38,12 +39,10 @@
 		6AD9D40B1CB00A1E005869D3 /* DemoSnapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AD9D4091CB00A1E005869D3 /* DemoSnapViewController.xib */; };
 		6AD9D40F1CB128D8005869D3 /* LYCalendarWeekDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD9D40E1CB128D8005869D3 /* LYCalendarWeekDayView.m */; };
 		6AD9D4101CB195C7005869D3 /* RTWSBanHeiG0v1-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6AD9D40C1CB1199A005869D3 /* RTWSBanHeiG0v1-Regular.ttf */; };
-		B2554130754B3649096C909C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E4289908DCC0BCF2F7C8B88 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0E4289908DCC0BCF2F7C8B88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2BF707050EDC0B0F0328582D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		46750D61F0D3ABF67D106D5B /* Pods-LYAnimation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LYAnimation.debug.xcconfig"; path = "Target Support Files/Pods-LYAnimation/Pods-LYAnimation.debug.xcconfig"; sourceTree = "<group>"; };
 		6ACF304A1CAAD25A0094EC24 /* LYAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LYAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ACF304E1CAAD25A0094EC24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6ACF30501CAAD25A0094EC24 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -108,7 +107,8 @@
 		6AD9D40C1CB1199A005869D3 /* RTWSBanHeiG0v1-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RTWSBanHeiG0v1-Regular.ttf"; sourceTree = "<group>"; };
 		6AD9D40D1CB128D8005869D3 /* LYCalendarWeekDayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LYCalendarWeekDayView.h; path = LYCalendar/LYCalendarWeekDayView.h; sourceTree = SOURCE_ROOT; };
 		6AD9D40E1CB128D8005869D3 /* LYCalendarWeekDayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LYCalendarWeekDayView.m; path = LYCalendar/LYCalendarWeekDayView.m; sourceTree = SOURCE_ROOT; };
-		95AA9BD33755759C4E3AE8C7 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		CD32E4EEFCA5D83378B8D223 /* Pods-LYAnimation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LYAnimation.release.xcconfig"; path = "Target Support Files/Pods-LYAnimation/Pods-LYAnimation.release.xcconfig"; sourceTree = "<group>"; };
+		CD927B8A014447C7EC9850C7 /* libPods-LYAnimation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LYAnimation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,13 +116,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2554130754B3649096C909C /* libPods.a in Frameworks */,
+				4E03A4B7CDEAD73DF8B2A35C /* libPods-LYAnimation.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3981852FC28C47D4B402AC47 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD927B8A014447C7EC9850C7 /* libPods-LYAnimation.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5587A0275CCB78CEBE8086FC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				46750D61F0D3ABF67D106D5B /* Pods-LYAnimation.debug.xcconfig */,
+				CD32E4EEFCA5D83378B8D223 /* Pods-LYAnimation.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		6ACF30411CAAD25A0094EC24 = {
 			isa = PBXGroup;
 			children = (
@@ -131,8 +148,8 @@
 				6AD9D3961CAFA70D005869D3 /* JTCalendar */,
 				6ACF304C1CAAD25A0094EC24 /* LYAnimation */,
 				6ACF304B1CAAD25A0094EC24 /* Products */,
-				E47A75CE3338E1A4269DEE61 /* Pods */,
-				9E03E424AC38645EDA15B66C /* Frameworks */,
+				5587A0275CCB78CEBE8086FC /* Pods */,
+				3981852FC28C47D4B402AC47 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -267,23 +284,6 @@
 			path = LYLoginButton;
 			sourceTree = "<group>";
 		};
-		9E03E424AC38645EDA15B66C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0E4289908DCC0BCF2F7C8B88 /* libPods.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E47A75CE3338E1A4269DEE61 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				2BF707050EDC0B0F0328582D /* Pods.debug.xcconfig */,
-				95AA9BD33755759C4E3AE8C7 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -291,12 +291,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6ACF30641CAAD25A0094EC24 /* Build configuration list for PBXNativeTarget "LYAnimation" */;
 			buildPhases = (
-				D043A9A7AEF63931D7EED856 /* Check Pods Manifest.lock */,
+				D8EC4D9D8943CA1E2AE099C1 /* [CP] Check Pods Manifest.lock */,
 				6ACF30461CAAD25A0094EC24 /* Sources */,
 				6ACF30471CAAD25A0094EC24 /* Frameworks */,
 				6ACF30481CAAD25A0094EC24 /* Resources */,
-				B6BB5CB14C30CEBDC03FC0C3 /* Embed Pods Frameworks */,
-				52BD8A10CFD9CD907BB4EA48 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -326,6 +324,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -357,49 +356,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		52BD8A10CFD9CD907BB4EA48 /* Copy Pods Resources */ = {
+		D8EC4D9D8943CA1E2AE099C1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
+			inputFileListPaths = (
 			);
-			name = "Copy Pods Resources";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LYAnimation-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B6BB5CB14C30CEBDC03FC0C3 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D043A9A7AEF63931D7EED856 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -534,26 +510,26 @@
 		};
 		6ACF30651CAAD25A0094EC24 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2BF707050EDC0B0F0328582D /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 46750D61F0D3ABF67D106D5B /* Pods-LYAnimation.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LYAnimation/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.61media.LYAnimation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
 		6ACF30661CAAD25A0094EC24 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95AA9BD33755759C4E3AE8C7 /* Pods.release.xcconfig */;
+			baseConfigurationReference = CD32E4EEFCA5D83378B8D223 /* Pods-LYAnimation.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LYAnimation/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.61media.LYAnimation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

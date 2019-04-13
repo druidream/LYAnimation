@@ -1,3 +1,5 @@
-platform :ios, '7.1'
+platform :ios, '8.0'
 
-pod 'pop'
+target 'LYAnimation' do
+pod 'pop', '~> 1.0.7'
+end
